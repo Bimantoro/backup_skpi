@@ -1,0 +1,656 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.3 (Ubuntu 10.3-1)
+-- Dumped by pg_dump version 10.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: agama; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.agama AS ENUM (
+    'islam',
+    'katholik',
+    'kristen',
+    'hindu',
+    'budha',
+    'konghucu'
+);
+
+
+ALTER TYPE public.agama OWNER TO postgres;
+
+--
+-- Name: jenis_keg; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.jenis_keg AS ENUM (
+    'ORG',
+    'LAIN'
+);
+
+
+ALTER TYPE public.jenis_keg OWNER TO postgres;
+
+--
+-- Name: posisi; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.posisi AS ENUM (
+    '0',
+    '1',
+    '2'
+);
+
+
+ALTER TYPE public.posisi OWNER TO postgres;
+
+--
+-- Name: tipe_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.tipe_status AS ENUM (
+    '0',
+    '1'
+);
+
+
+ALTER TYPE public.tipe_status OWNER TO postgres;
+
+--
+-- Name: id_cp_sq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.id_cp_sq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.id_cp_sq OWNER TO postgres;
+
+--
+-- Name: id_kegiatan_sq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.id_kegiatan_sq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.id_kegiatan_sq OWNER TO postgres;
+
+--
+-- Name: id_label_detail_sq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.id_label_detail_sq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.id_label_detail_sq OWNER TO postgres;
+
+--
+-- Name: id_label_sq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.id_label_sq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.id_label_sq OWNER TO postgres;
+
+--
+-- Name: id_pengaturan_sq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.id_pengaturan_sq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.id_pengaturan_sq OWNER TO postgres;
+
+--
+-- Name: id_skpi_sq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.id_skpi_sq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.id_skpi_sq OWNER TO postgres;
+
+--
+-- Name: seri_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.seri_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seri_seq OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: tb_cp; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_cp (
+    id_c integer DEFAULT nextval('public.id_cp_sq'::regclass) NOT NULL,
+    nim character varying(20) NOT NULL,
+    kd_cp text NOT NULL,
+    tgl_validasi date,
+    nip character varying(30),
+    keterangan text
+);
+
+
+ALTER TABLE public.tb_cp OWNER TO postgres;
+
+--
+-- Name: tb_kegiatan; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_kegiatan (
+    id_k integer DEFAULT nextval('public.id_kegiatan_sq'::regclass) NOT NULL,
+    nim character varying(20),
+    kd_kegiatan text,
+    jenis text,
+    saran text,
+    status public.tipe_status
+);
+
+
+ALTER TABLE public.tb_kegiatan OWNER TO postgres;
+
+--
+-- Name: tb_kode_ps; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_kode_ps (
+    kode character varying(15) NOT NULL,
+    keterangan text,
+    status public.tipe_status
+);
+
+
+ALTER TABLE public.tb_kode_ps OWNER TO postgres;
+
+--
+-- Name: tb_label; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_label (
+    id_l integer DEFAULT nextval('public.id_label_sq'::regclass) NOT NULL,
+    tgl_mulai date,
+    tgl_selesai date,
+    status public.tipe_status DEFAULT '0'::public.tipe_status,
+    keterangan text
+);
+
+
+ALTER TABLE public.tb_label OWNER TO postgres;
+
+--
+-- Name: tb_label_detail; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_label_detail (
+    id_ld integer DEFAULT nextval('public.id_label_detail_sq'::regclass) NOT NULL,
+    id_l integer,
+    nama_idn text,
+    nama_en text,
+    nama_arb text,
+    posisi public.posisi,
+    urut integer,
+    ref integer
+);
+
+
+ALTER TABLE public.tb_label_detail OWNER TO postgres;
+
+--
+-- Name: tb_pengaturan; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_pengaturan (
+    id_set integer DEFAULT nextval('public.id_pengaturan_sq'::regclass) NOT NULL,
+    kd_prodi character varying(10),
+    id_ld integer
+);
+
+
+ALTER TABLE public.tb_pengaturan OWNER TO postgres;
+
+--
+-- Name: tb_penulisan_sertifikasi; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_penulisan_sertifikasi (
+    id_ps integer DEFAULT nextval('public.id_pengaturan_sq'::regclass) NOT NULL,
+    kode character varying(15),
+    nama_idn text,
+    nama_en text,
+    unit_idn text,
+    unit_en text,
+    urutan integer,
+    status public.tipe_status
+);
+
+
+ALTER TABLE public.tb_penulisan_sertifikasi OWNER TO postgres;
+
+--
+-- Name: tb_skpi; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_skpi (
+    id_s integer DEFAULT nextval('public.id_skpi_sq'::regclass) NOT NULL,
+    nim character varying(20),
+    no_skpi text,
+    id_l integer,
+    status public.tipe_status,
+    tgl_setuju date,
+    nip character varying(30),
+    keterangan text,
+    unused_label text,
+    tgl_daftar date,
+    kd_prodi character varying(30)
+);
+
+
+ALTER TABLE public.tb_skpi OWNER TO postgres;
+
+--
+-- Name: tb_unused_label; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tb_unused_label (
+    kd_prodi character varying(20),
+    id_ld integer
+);
+
+
+ALTER TABLE public.tb_unused_label OWNER TO postgres;
+
+--
+-- Data for Name: tb_cp; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_cp (id_c, nim, kd_cp, tgl_validasi, nip, keterangan) FROM stdin;
+1	13651060	10001322	2018-07-13	PKSI100	\N
+2	13651060	10001323	2018-07-13	PKSI100	\N
+3	13651060	10001324	2018-07-13	PKSI100	\N
+4	13651060	10001325	2018-07-13	PKSI100	\N
+5	13651060	10001326	2018-07-13	PKSI100	\N
+6	13651060	10001327	2018-07-13	PKSI100	\N
+7	13651060	10001328	2018-07-13	PKSI100	\N
+8	13651060	10001329	2018-07-13	PKSI100	\N
+9	13651060	10001330	2018-07-13	PKSI100	\N
+10	13651060	10001331	2018-07-13	PKSI100	\N
+11	13651060	10001332	2018-07-13	PKSI100	\N
+12	13651060	10001333	2018-07-13	PKSI100	\N
+13	13651060	10001334	2018-07-13	PKSI100	\N
+14	13651060	10001336	2018-07-13	PKSI100	\N
+15	13651060	10001337	2018-07-13	PKSI100	\N
+16	13651060	10001338	2018-07-13	PKSI100	\N
+17	13651060	10001339	2018-07-13	PKSI100	\N
+18	13651060	10001340	2018-07-13	PKSI100	\N
+19	13651060	10001341	2018-07-13	PKSI100	\N
+20	13651060	10001342	2018-07-13	PKSI100	\N
+21	13651060	10001343	2018-07-13	PKSI100	\N
+22	13651060	10001344	2018-07-13	PKSI100	\N
+23	13651060	10001345	2018-07-13	PKSI100	\N
+24	13651060	10001346	2018-07-13	PKSI100	\N
+25	13651060	10001347	2018-07-13	PKSI100	\N
+26	13651060	10001348	2018-07-13	PKSI100	\N
+27	13651060	10001349	2018-07-13	PKSI100	\N
+28	13651060	10001350	2018-07-13	PKSI100	\N
+29	13651060	10001351	2018-07-13	PKSI100	\N
+30	13651060	10001352	2018-07-13	PKSI100	\N
+31	13651060	10001353	2018-07-13	PKSI100	\N
+32	13651060	10001354	2018-07-13	PKSI100	\N
+33	13651060	10001355	2018-07-13	PKSI100	\N
+34	13651060	10001356	2018-07-13	PKSI100	\N
+35	13651060	10001357	2018-07-13	PKSI100	\N
+36	13651060	10001358	2018-07-13	PKSI100	\N
+37	13651060	10001359	2018-07-13	PKSI100	\N
+\.
+
+
+--
+-- Data for Name: tb_kegiatan; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_kegiatan (id_k, nim, kd_kegiatan, jenis, saran, status) FROM stdin;
+2	13651060	136510601002289038	ORGANISASI	Belum dilakukan verifikasi penulisan !	\N
+3	13651060	136510601002289041	SERTIFIKASI	Belum dilakukan verifikasi penulisan !	\N
+4	13651060	136510601002287500	MAGANG	Belum dilakukan verifikasi penulisan !	\N
+5	13651060	136510601002289042	KARAKTER	Belum dilakukan verifikasi penulisan !	\N
+6	13651060	UIN13651060IKLA	SERTIFIKASI	Belum dilakukan verifikasi penulisan !	\N
+7	13651060	UIN13651060TOEC	SERTIFIKASI	Belum dilakukan verifikasi penulisan !	\N
+1	13651060	136510601002289039	PRESTASI	Penulisan Data Sudah Benar	1
+8	13651060	UIN13651060ICT	SERTIFIKASI	Belum dilakukan verifikasi penulisan !	\N
+\.
+
+
+--
+-- Data for Name: tb_kode_ps; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_kode_ps (kode, keterangan, status) FROM stdin;
+ICT	Sertifikasi Teknologi Informasi dan Komunikasi	1
+IKLA	Sertifikasi Ikhtibar Kafaah Al-Lughah Al Arabiyah	1
+TOEC	Sertifikasi Test Of English Competence	1
+\.
+
+
+--
+-- Data for Name: tb_label; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_label (id_l, tgl_mulai, tgl_selesai, status, keterangan) FROM stdin;
+1	2017-07-01	2025-07-31	1	label skpi 1
+\.
+
+
+--
+-- Data for Name: tb_label_detail; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_label_detail (id_ld, id_l, nama_idn, nama_en, nama_arb, posisi, urut, ref) FROM stdin;
+1	1	Surat Keterangan Pendamping Ijazah	Diploma Supplement		0	1	\N
+4	1	Informasi Tentang Identitas Diri Pemegang SKPI	Information Identifying The Holder of Diploma Supplement		1	1	\N
+5	1	Informasi Tentang Identitas Penyelenggara Program	Information Identifying the Awarding Institution		1	2	\N
+6	1	Informasi Tentang Kualifikasi dan Hasil Yang Dicapai	Information Identifying the Qualification and Outcomes Obtained		1	3	\N
+7	1	Aktivitas, Prestasi dan Penghargaan	Activities, Achievements and Awards		1	4	\N
+8	1	Informasi Tentang Sistem Pendidikan Tinggi di Indonesia	Information on the Indonesian Higher Education System and the Indonesian National Qualifications Framework		1	5	\N
+9	1	Kerangka Kualifikasi Nasional Indonesia (KKNI)	Indonesian Qualification Framework		1	6	\N
+10	1	Nama Lengkap	Full Name		2	1	4
+11	1	Tempat dan Tanggal Lahir	Date and Place of Birth		2	2	4
+12	1	Nomor Induk Mahasiswa	Student Identification Number		2	3	4
+13	1	Tahun Masuk	Year of Admission		2	4	4
+14	1	Tahun Lulus	Year of Completion		2	5	4
+15	1	Nomor Ijazah	Nomor Ijazah		2	6	4
+16	1	Gelar	Name of Qualification		2	7	4
+17	1	SK Pendirian Perguruan Tinggi	Awarding Institution’s License		2	1	5
+18	1	Nama Perguruan Tinggi	Awarding Institution		2	2	5
+19	1	Fakultas 	Faculty		2	3	5
+20	1	Program Studi	Major		2	4	5
+21	1	Jenis & Jenjang Pendidikan	Type & Level of Education		2	5	5
+22	1	Jenjang Kualifikasi sesuai KKNI	Level of Qualification in the National Qualification Framework		2	6	5
+23	1	Persyaratan Penerimaan	Entry Requirements		2	7	5
+24	1	Bahasa Pengantar Kuliah	Language of Instruction		2	8	5
+25	1	Sistem Penilaian	Grading System		2	9	5
+26	1	Lama Studi Reguler	Regular Length of Study		2	10	5
+27	1	Jenis dan jenjang pendidikan lanjutan	Access to Further Study		2	11	5
+28	1	Status profesi (bila ada)	Professional Status (if Applicable)		2	12	5
+34	1	Prestasi dan Penghargaan	Achievements and Awards		2	1	7
+35	1	Keikutsertaan dalam Organisasi	Organizational Experiences		2	2	7
+36	1	Sertifikat Keahlian	Certificate of Competencies		2	3	7
+37	1	Kerja Praktek/Magang	Apprenticeships		2	4	7
+38	1	Pendidikan Karakter 	Soft Skill Trainings		2	5	7
+39	1	Sistem Pendidikan Tinggi di Indonesia	Higher Education System in Indonesia		2	1	8
+3	1	Alamat	Contact Details		0	2	\N
+29	1	Capaian Pembelajaran	Learning Outcomes		2	5	6
+30	1	Sikap	Attitude		2	1	6
+31	1	Pengetahuan	Knowledge 		2	2	6
+32	1	Keterampilan Umum	General Skills		2	3	6
+33	1	Keterampilan Khusus	Special Skills		2	4	6
+40	1	Surat Keterangan Pendamping Ijazah (SKPI) ini mengacu pada Kerangka Kualifikasi Nasional Indonesia (KKNI) dan Konvensi UNESCO tentang pengakuan studi, ijazah dan gelar perguruan tinggi. Tujuan dari SKPI ini adalah menjadi dokumen yang menyatakan kemampuan kerja, penguasaan pengetahuan, dan sikap/moral pemegangnya.	This Diploma Supplement refers to the Indonesian Qualification Framework and UNESCO Convention on the Recognition of Studies, Diplomas and Degrees in Higher Education. The purpose of the supplement is to provide a description of the nature, level, context and status of the studies that were pursued and successfully completed by the individual named on the original qualification to which this supplement is appended.		2	1	1
+\.
+
+
+--
+-- Data for Name: tb_pengaturan; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_pengaturan (id_set, kd_prodi, id_ld) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tb_penulisan_sertifikasi; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_penulisan_sertifikasi (id_ps, kode, nama_idn, nama_en, unit_idn, unit_en, urutan, status) FROM stdin;
+1	ICT	Teknologi Informasi dan Komunikasi	Information Communication Technology	Islam Negeri Sunan Kalijaga Yogyakarta	State Islamic University Sunan Kalijaga Yogyakarta	1	1
+2	IKLA	Ikhtibar Kafaah Al-Lughah Al Arabiyah (IKLA) 	Ikhtibar Kafaah Al-Lughah Al Arabiyah (IKLA) 	Islam Negeri Sunan Kalijaga Yogyakarta	State Islamic University Sunan Kalijaga Yogyakarta	2	1
+3	TOEC	Test Of English Competence (TOEC)	Test Of English Competence (TOEC)	Islam Negeri Sunan Kalijaga Yogyakarta	State Islamic University Sunan Kalijaga Yogyakarta	3	1
+\.
+
+
+--
+-- Data for Name: tb_skpi; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_skpi (id_s, nim, no_skpi, id_l, status, tgl_setuju, nip, keterangan, unused_label, tgl_daftar, kd_prodi) FROM stdin;
+1	14730081	SKP00000	1	0	\N		\N	[]	2018-07-13	22406
+0	13651060	SKP00001	1	1	2018-07-13	PKSI100		[]	2018-07-01	22607
+2	14730058	SKP00000	1	0	\N		\N	[]	2018-07-13	22406
+3	14730089	SKP00000	1	0	\N		\N	[]	2018-07-13	22406
+4	14730086	SKP000001	1	0	\N		\N	[]	2018-07-13	22406
+5	14480087	SKP000002	1	0	\N		\N	[]	2018-07-13	22122
+6	14730090	SKP000003	1	0	\N		\N	[]	2018-07-13	22406
+7	13340137	SKP000004	1	0	\N		\N	[]	2018-07-13	40
+\.
+
+
+--
+-- Data for Name: tb_unused_label; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tb_unused_label (kd_prodi, id_ld) FROM stdin;
+\.
+
+
+--
+-- Name: id_cp_sq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.id_cp_sq', 37, true);
+
+
+--
+-- Name: id_kegiatan_sq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.id_kegiatan_sq', 8, true);
+
+
+--
+-- Name: id_label_detail_sq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.id_label_detail_sq', 40, true);
+
+
+--
+-- Name: id_label_sq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.id_label_sq', 1, true);
+
+
+--
+-- Name: id_pengaturan_sq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.id_pengaturan_sq', 3, true);
+
+
+--
+-- Name: id_skpi_sq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.id_skpi_sq', 7, true);
+
+
+--
+-- Name: seri_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.seri_seq', 4, true);
+
+
+--
+-- Name: tb_pengaturan pk_id_pengaturan; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_pengaturan
+    ADD CONSTRAINT pk_id_pengaturan PRIMARY KEY (id_set);
+
+
+--
+-- Name: tb_label_detail pk_labeld_idlabeld; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_label_detail
+    ADD CONSTRAINT pk_labeld_idlabeld PRIMARY KEY (id_ld);
+
+
+--
+-- Name: tb_penulisan_sertifikasi pk_penulisan_prestasi; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_penulisan_sertifikasi
+    ADD CONSTRAINT pk_penulisan_prestasi PRIMARY KEY (id_ps);
+
+
+--
+-- Name: tb_skpi pk_skpi_idskpi; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_skpi
+    ADD CONSTRAINT pk_skpi_idskpi PRIMARY KEY (id_s);
+
+
+--
+-- Name: tb_cp tb_cp_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_cp
+    ADD CONSTRAINT tb_cp_pkey PRIMARY KEY (nim, kd_cp);
+
+
+--
+-- Name: tb_kegiatan tb_kegiatan_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_kegiatan
+    ADD CONSTRAINT tb_kegiatan_pkey PRIMARY KEY (id_k);
+
+
+--
+-- Name: tb_kode_ps tb_kode_ps_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_kode_ps
+    ADD CONSTRAINT tb_kode_ps_pk PRIMARY KEY (kode);
+
+
+--
+-- Name: tb_label tb_label_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_label
+    ADD CONSTRAINT tb_label_pkey PRIMARY KEY (id_l);
+
+
+--
+-- Name: tb_pengaturan fk_idld_pengaturan; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_pengaturan
+    ADD CONSTRAINT fk_idld_pengaturan FOREIGN KEY (id_ld) REFERENCES public.tb_label_detail(id_ld);
+
+
+--
+-- Name: tb_penulisan_sertifikasi fk_penulisan_kode; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_penulisan_sertifikasi
+    ADD CONSTRAINT fk_penulisan_kode FOREIGN KEY (kode) REFERENCES public.tb_kode_ps(kode);
+
+
+--
+-- Name: tb_label_detail tb_label_detail_id_l_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_label_detail
+    ADD CONSTRAINT tb_label_detail_id_l_fkey FOREIGN KEY (id_l) REFERENCES public.tb_label(id_l);
+
+
+--
+-- Name: tb_label_detail tb_label_detail_ref_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_label_detail
+    ADD CONSTRAINT tb_label_detail_ref_fkey FOREIGN KEY (ref) REFERENCES public.tb_label_detail(id_ld);
+
+
+--
+-- Name: tb_skpi tb_skpi_id_l_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tb_skpi
+    ADD CONSTRAINT tb_skpi_id_l_fkey FOREIGN KEY (id_l) REFERENCES public.tb_label(id_l);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
