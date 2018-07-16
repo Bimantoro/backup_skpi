@@ -168,7 +168,7 @@
 <table cellpadding="0" cellspacing="0">
 	<tr><td><b style="font-size: 9px;"><?php echo $nomertampil; ?>. <?php echo strtoupper($kegiatan[0]['idn']); ?> </b>
 		<br>
-		<b><i style="font-size: 9px;"><?php echo $nomertampil; ?>. <?php echo $capaian[0]['en']; ?></i></b>
+		<b><i style="font-size: 9px;"><?php echo $nomertampil; ?>. <?php echo $kegiatan[0]['en']; ?></i></b>
 	</td></tr>
 </table>
 

@@ -1675,27 +1675,29 @@ class Skpi_lib_basic
 			$rule 	= $this->get_pengaturan_penulisan_aktif();
 			$i = 0;
 			$data = array();
-			foreach ($rule as $key) {
-				if($key['kode'] == 'ICT'){
-					$ict = $this->get_ict($nim);
-					if($ict){
-						$ict['NAMA_IDN'] = $key['nama_idn'].' '.$key['unit_idn'];
-						$ict['NAMA_EN'] = $key['nama_en'].' '.$key['unit_en'];
-						$data[$i] = $ict; $i++;
-					}
-				} else if ($key['kode'] == 'IKLA'){
-					$ikla = $this->get_ikla($nim);
-					if($ikla){
-						$ikla['NAMA_IDN'] = $key['nama_idn'].' '.$key['unit_idn'];
-						$ikla['NAMA_EN'] = $key['nama_en'].' '.$key['unit_en'];
-						$data[$i] = $ikla; $i++;
-					}
-				} else if ($key['kode'] == 'TOEC'){
-					$toec = $this->get_toec($nim);
-					if($toec){
-						$toec['NAMA_IDN'] = $key['nama_idn'].' '.$key['unit_idn'];
-						$toec['NAMA_EN'] = $key['nama_en'].' '.$key['unit_en'];
-						$data[$i] = $toec; $i++;
+			if($rule){
+				foreach ($rule as $key) {
+					if($key['kode'] == 'ICT'){
+						$ict = $this->get_ict($nim);
+						if($ict){
+							$ict['NAMA_IDN'] = $key['nama_idn'].' '.$key['unit_idn'];
+							$ict['NAMA_EN'] = $key['nama_en'].' '.$key['unit_en'];
+							$data[$i] = $ict; $i++;
+						}
+					} else if ($key['kode'] == 'IKLA'){
+						$ikla = $this->get_ikla($nim);
+						if($ikla){
+							$ikla['NAMA_IDN'] = $key['nama_idn'].' '.$key['unit_idn'];
+							$ikla['NAMA_EN'] = $key['nama_en'].' '.$key['unit_en'];
+							$data[$i] = $ikla; $i++;
+						}
+					} else if ($key['kode'] == 'TOEC'){
+						$toec = $this->get_toec($nim);
+						if($toec){
+							$toec['NAMA_IDN'] = $key['nama_idn'].' '.$key['unit_idn'];
+							$toec['NAMA_EN'] = $key['nama_en'].' '.$key['unit_en'];
+							$data[$i] = $toec; $i++;
+						}
 					}
 				}
 			}

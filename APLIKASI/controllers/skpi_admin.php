@@ -335,7 +335,7 @@ class Skpi_admin extends CI_Controller {
 
 	function mahasiswa_daftar_skpi_testing()
 	{
-		$nim = '13651068';
+		$nim = '13610046';
 
 		$hasil = $this->lib_basic->get_label(1500, 2, array());
 		$id_l = $hasil['id_l']; // id label yang sedang aktif
@@ -732,18 +732,20 @@ class Skpi_admin extends CI_Controller {
 			$temp_label = $this->lib_basic->get_label(1500, 1, array('status'));
 			$temp = array();
 			$i=0;
-			foreach ($temp_label as $key) {
-				if($key['tgl_mulai']!=''){
-					$key['tgl_mulai'] = $this->lib_basic->date_indo(date('d-m-Y', strtotime($key['tgl_mulai'])));
+			if($temp_label){
+				foreach ($temp_label as $key) {
+					if($key['tgl_mulai']!=''){
+						$key['tgl_mulai'] = $this->lib_basic->date_indo(date('d-m-Y', strtotime($key['tgl_mulai'])));
+					}
+
+					if($key['tgl_selesai']!=''){
+						$key['tgl_selesai'] = $this->lib_basic->date_indo(date('d-m-Y', strtotime($key['tgl_selesai'])));
+					}
+
+					$temp[$i] = $key;
+					$i++;
+
 				}
-
-				if($key['tgl_selesai']!=''){
-					$key['tgl_selesai'] = $this->lib_basic->date_indo(date('d-m-Y', strtotime($key['tgl_selesai'])));
-				}
-
-				$temp[$i] = $key;
-				$i++;
-
 			}
 
 			$data['label'] = $temp;
@@ -829,18 +831,20 @@ class Skpi_admin extends CI_Controller {
 			$temp_label = $this->lib_basic->get_label(1500, 1, array('status'));
 			$temp = array();
 			$i=0;
-			foreach ($temp_label as $key) {
-				if($key['tgl_mulai']!=''){
-					$key['tgl_mulai'] = $this->lib_basic->date_indo(date('d-m-Y', strtotime($key['tgl_mulai'])));
+			if($temp_label){
+				foreach ($temp_label as $key) {
+					if($key['tgl_mulai']!=''){
+						$key['tgl_mulai'] = $this->lib_basic->date_indo(date('d-m-Y', strtotime($key['tgl_mulai'])));
+					}
+
+					if($key['tgl_selesai']!=''){
+						$key['tgl_selesai'] = $this->lib_basic->date_indo(date('d-m-Y', strtotime($key['tgl_selesai'])));
+					}
+
+					$temp[$i] = $key;
+					$i++;
+
 				}
-
-				if($key['tgl_selesai']!=''){
-					$key['tgl_selesai'] = $this->lib_basic->date_indo(date('d-m-Y', strtotime($key['tgl_selesai'])));
-				}
-
-				$temp[$i] = $key;
-				$i++;
-
 			}
 
 			$data['label'] = $temp;
@@ -4733,10 +4737,17 @@ class Skpi_admin extends CI_Controller {
 		echo json_encode($data);
 	}
 
-
 	function cek_data_skpi_mhs_testing(){
 		$data = $this->lib_basic->get_skpi_mhs('11540044');
 		$data = $this->session->all_userdata();
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
+	}
+
+	function testing_label_error(){
+		$label = '1';
+		$data = $this->lib_basic->get_label(1500, 8, array($label, '1', 4));
 		echo '<pre>';
 		print_r($data);
 		echo '</pre>';

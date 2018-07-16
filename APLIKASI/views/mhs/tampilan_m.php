@@ -50,6 +50,9 @@
 		<?php } ?>
 
 		<!-- MEMUNCULKAN NOTIFNYA -->
+
+		<?php if(!empty($KEGIATAN[0])){ ?>
+
 		<?php if($STS_SKPI == 'BELUM'){ ?>
 		<?php if($SYARAT_DAFTAR['STATUS'] == 1){ ?>
 				<div class="bs-callout bs-callout-on-progress">
@@ -67,6 +70,7 @@
 			<?php } ?>
 		<?php }else if($STS_SKPI==0){ ?>
 
+
 		<div class="bs-callout bs-callout-on-progress">
 			<p>Verifikasi <?php echo $string_skpi[0]; ?> <b><?php echo $NAMA; ?></b> sedang dalam proses, untuk informasi lebih lanjut silahkan hubungi petugas Program Studi.</p>
 		</div>
@@ -81,7 +85,13 @@
 			</p>
 		</div>
 
-		<?php } ?>	
+		<?php } ?>
+
+		<?php }else{ ?>
+			<div class="bs-callout bs-callout-error">
+				<p>Label Surat Keterangan Pendamping Ijazah Tidak ditemukan !</p>
+			</div>
+		<?php } ?>
 
 		<?php if($STS_SKPI == 'BELUM'){ ?>
 			<?php if($SYARAT_DAFTAR['SYARAT']){ ?>
@@ -117,6 +127,8 @@
 			<?php } ?>
 		<?php } ?>	
 
+
+		<?php if(isset($KEGIATAN[0])){ ?>
 		<div>
 			<h2>Data <?php 	echo $KEGIATAN[0]['idn']; ?></h2>
 
@@ -155,6 +167,7 @@
 				
 			</table>
 		</div>
+		<?php } ?>
 	</div>
 	<div>
 		<strong>Keterangan</strong>

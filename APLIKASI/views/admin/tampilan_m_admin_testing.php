@@ -53,38 +53,44 @@
 
 		<!-- MEMUNCULKAN NOTIFNYA -->
 		
+		<?php if(!empty($KEGIATAN[0])){ ?>
 
-		<?php if($STS_SKPI == 'BELUM'){ ?>
-			<?php if($SYARAT_DAFTAR['STATUS'] == 1){ ?>
-				<div class="bs-callout bs-callout-on-progress">
-					<p><b><?php echo $NAMA; ?></b>, silahkan melakukan pengecekan data aktivitas sebelum melakukan pendaftaran proses verifikasi Surat Keterangan Pendamping Ijazah. Jika terdapat perubahan pada data silahkan dilakukan update dari halaman <b>Data Pribadi Mahasiswa</b>.</p>
+			<?php if($STS_SKPI == 'BELUM'){ ?>
+				<?php if($SYARAT_DAFTAR['STATUS'] == 1){ ?>
+					<div class="bs-callout bs-callout-on-progress">
+						<p><b><?php echo $NAMA; ?></b>, silahkan melakukan pengecekan data aktivitas sebelum melakukan pendaftaran proses verifikasi Surat Keterangan Pendamping Ijazah. Jika terdapat perubahan pada data silahkan dilakukan update dari halaman <b>Data Pribadi Mahasiswa</b>.</p>
 
-					<br>
-					<p>Silahkan tekan tombol daftar untuk melakukan pendaftaran verifikasi Surat Ket. Pendamping Ijazah</p>
-					<br>
-					<p><?php echo anchor('skpi/skpi_mhs/verifikasi_pendaftaran', 'Daftar', array('class' => 'btn-uin btn btn-small btn btn-inverse')); ?></p>
-				</div>
+						<br>
+						<p>Silahkan tekan tombol daftar untuk melakukan pendaftaran verifikasi Surat Ket. Pendamping Ijazah</p>
+						<br>
+						<p><?php echo anchor('skpi/skpi_mhs/verifikasi_pendaftaran', 'Daftar', array('class' => 'btn-uin btn btn-small btn btn-inverse')); ?></p>
+					</div>
+				<?php }else{ ?>
+					<div class="bs-callout bs-callout-error">
+						<p>	Mohon Maaf <b><?php echo $NAMA; ?></b>, Anda belum dapat melakukan Pendaftaran Verifikasi Surat Ket. Pendamping Ijazah, karena ada syarat-syarat yang belum terpenuhi, sebagai berikut :</p>
+					</div>
+				<?php } ?>
+			<?php }else if($STS_SKPI==0){ ?>
+
+			<div class="bs-callout bs-callout-on-progress">
+				<p>Verifikasi Surat Keterangan Pendamping Ijazah <b><?php echo $NAMA; ?></b> sedang dalam proses, untuk informasi lebih lanjut silahkan hubungi petugas Program Studi.</p>
+			</div>
+
 			<?php }else{ ?>
-				<div class="bs-callout bs-callout-error">
-					<p>	Mohon Maaf <b><?php echo $NAMA; ?></b>, Anda belum dapat melakukan Pendaftaran Verifikasi Surat Ket. Pendamping Ijazah, karena ada syarat-syarat yang belum terpenuhi, sebagai berikut :</p>
-				</div>
+
+			<div class="bs-callout bs-callout-success">
+				<p>Selamat <b><?php echo $NAMA; ?></b>, Surat Ket. Pendamping Ijazah sudah berhasil di verifikasi.</p>
+				<br>
+				<p>
+					<?php echo anchor(base_url('/skpi/skpi_mhs/cetak'), 'Cetak Draft SKPI', array('class' => 'btn-uin btn btn-small btn-inverse', 'target' => '_blank')); ?>
+				</p>
+			</div>
+
 			<?php } ?>
-		<?php }else if($STS_SKPI==0){ ?>
-
-		<div class="bs-callout bs-callout-on-progress">
-			<p>Verifikasi Surat Keterangan Pendamping Ijazah <b><?php echo $NAMA; ?></b> sedang dalam proses, untuk informasi lebih lanjut silahkan hubungi petugas Program Studi.</p>
-		</div>
-
 		<?php }else{ ?>
-
-		<div class="bs-callout bs-callout-success">
-			<p>Selamat <b><?php echo $NAMA; ?></b>, Surat Ket. Pendamping Ijazah sudah berhasil di verifikasi.</p>
-			<br>
-			<p>
-				<?php echo anchor(base_url('/skpi/skpi_mhs/cetak'), 'Cetak Draft SKPI', array('class' => 'btn-uin btn btn-small btn-inverse', 'target' => '_blank')); ?>
-			</p>
-		</div>
-
+			<div class="bs-callout bs-callout-error">
+				<p>Label Surat Keterangan Pendamping Ijazah Tidak ditemukan !</p>
+			</div>
 		<?php } ?>
 
 		<!-- ini khusus untuk syarat saja -->
@@ -123,6 +129,7 @@
 		<?php } ?>	
 
 
+		<?php if(isset($KEGIATAN[0])){ ?>
 		<div>
 			<h2>Data <?php 	echo $KEGIATAN[0]['idn']; ?></h2>
 
@@ -161,6 +168,8 @@
 				
 			</table>
 		</div>
+		<?php }?>
+
 	</div>
 	<div>
 		<strong>Keterangan</strong>

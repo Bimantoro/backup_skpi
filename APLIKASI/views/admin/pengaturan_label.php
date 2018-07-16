@@ -15,7 +15,7 @@
 				<?php if($jml_label==0){ ?>
 				<h1>Tidak Ada Data untuk Ditampilkan !</h1>
 				<br>
-				<?php echo $tambah; ?>
+				<?php //echo $tambah; ?>
 				<?php 	}else{ ?>
 				<h3>Daftar Master Tabel SKPI</h3>
 				<table class="table table-bordered">
